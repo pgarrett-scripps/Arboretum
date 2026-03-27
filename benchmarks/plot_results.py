@@ -45,7 +45,7 @@ def plot_scaling(summary, results_dir):
             tree_data[tt]['metrics'][m]['std'].append(row[f'{m}_std'] * scale)
 
     fig, axes = plt.subplots(2, 3, figsize=(18, 10))
-    fig.suptitle('Arboretum PSM Tree Benchmark Results', fontsize=16, fontweight='bold')
+    fig.suptitle('Arboretum Data Structure Benchmark Results', fontsize=16, fontweight='bold')
     axes = axes.flatten()
 
     colors = plt.cm.tab10(np.linspace(0, 1, len(tree_data)))
@@ -66,7 +66,7 @@ def plot_scaling(summary, results_dir):
                 alpha=0.15, color=color
             )
         ax.set_title(title, fontsize=12)
-        ax.set_xlabel('Tree Size (PSMs)')
+        ax.set_xlabel('Tree Size (records)')
         ax.set_ylabel(ylabel)
         ax.grid(True, alpha=0.3)
 
