@@ -4,7 +4,7 @@
 
 **[View Benchmark Results](https://pgarrett-scripps.github.io/Arboretum/)**
 
-Arboretum is a Python package for storing and searching Peptide Sequence Matches (PSMs) from mass spectrometry experiments in real time. It provides multiple interchangeable data structure implementations so you can benchmark and choose the best one for your workload.
+Arboretum is a Python package for benchmarking data structure implementations for storing and querying records with range-based and multi-dimensional filtering. Originally designed for Peptide Sequence Matches (PSMs) from mass spectrometry, the benchmark suite generalizes to any interval/range query workload.
 
 ## Tree Types
 
@@ -17,6 +17,7 @@ Arboretum is a Python package for storing and searching Peptide Sequence Matches
 | `RB` | Red-black tree |
 | `FAST_BINARY` / `FAST_AVL` / `FAST_RB` | C-optimized variants of the above |
 | `LIST` | Simple unsorted list (baseline) |
+| `INTERVAL` | Interval tree (Python `intervaltree` library) |
 
 ## Quick Start
 
@@ -43,7 +44,7 @@ Arboretum includes a comprehensive benchmark suite that compares all tree implem
 pip install -r requirements.txt
 
 # Run benchmarks (small, ~2 min)
-python benchmarks/run_benchmarks.py --num-psms 5000 --num-points 5 --num-iterations 2
+python benchmarks/run_benchmarks.py --num-records 5000 --num-points 5 --num-iterations 2
 
 # Generate plots
 python benchmarks/plot_results.py benchmarks/results

@@ -45,7 +45,7 @@ RT_OFFSET = 100
 OOK0_TOL = 0.05
 
 
-def benchmark_tree(tree_type, num_psms, num_points, num_iterations, ops, seed):
+def benchmark_tree(tree_type, num_records, num_points, num_iterations, ops, seed):
     """Run all benchmarks for a single tree type."""
     print(f"\n{'='*60}")
     print(f"  Benchmarking: {tree_type.name}")
@@ -54,7 +54,7 @@ def benchmark_tree(tree_type, num_psms, num_points, num_iterations, ops, seed):
     results = []
 
     for point_idx in range(num_points):
-        target_size = (point_idx + 1) * num_psms
+        target_size = (point_idx + 1) * num_records
         print(f"  Size point {point_idx + 1}/{num_points}: {target_size:,} records")
 
         for iteration in range(num_iterations):

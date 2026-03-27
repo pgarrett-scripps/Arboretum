@@ -43,7 +43,7 @@ jobs:
       - name: Run benchmarks
         run: |
           python benchmarks/run_benchmarks.py \
-            --num-psms 5000 \
+            --num-records 5000 \
             --num-points 5 \
             --num-iterations 2 \
             --ops 500 \
