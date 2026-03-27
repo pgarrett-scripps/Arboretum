@@ -21,7 +21,7 @@ class PsmIntervalTree(PsmTree):
         return psms
 
     def add(self, psm: PSM):
-        ppm_offset = psm.mz * self.ppm / 1_000_000
+        ppm_offset = abs(psm.mz) * self.ppm / 1_000_000
         self.tree[psm.mz - ppm_offset:psm.mz + ppm_offset] = psm
 
     def remove(self, psm: PSM):
@@ -33,8 +33,11 @@ class PsmIntervalTree(PsmTree):
         raise ValueError(f"PSM not found in interval tree")
 
     def _search(self, mz_bounds: Boundary, rt_bounds: Boundary, ook0_bounds: Boundary):
-        psms = [interval.data for interval in self.tree[mz_bounds.lower:mz_bounds.upper+0.0001]]  # make inclusive
-        return [psm for psm in psms if psm.in_boundary(mz_bounds, rt_bounds, ook0_bounds)]
+        # Point query at midpoint - intervals already encode mz tolerance,
+        # so overlapping intervals are the mz matches. Filter by rt/ook0.
+        mz_mid = (mz_bounds.lower + mz_bounds.upper) / 2
+        return [interval.data for interval in self.tree[mz_mid]
+                if interval.data.in_boundary(mz_bounds, rt_bounds, ook0_bounds)]
 
     def get(self, mz: float, rt: float, ook0: float) -> List[PSM]:
         psms = [interval.data for interval in self.tree[mz]]
