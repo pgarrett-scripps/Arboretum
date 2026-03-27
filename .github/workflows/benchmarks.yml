@@ -1,0 +1,75 @@
+name: Run Benchmarks & Deploy Results
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'arboretum/**'
+      - 'benchmarks/**'
+      - '.github/workflows/benchmarks.yml'
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * 0'  # Weekly on Sunday at midnight UTC
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install setuptools==58.1.0
+          pip install numpy matplotlib sortedcontainers intervaltree
+          pip install git+https://github.com/pgarrett-scripps/ranged_bintrees.git
+          pip install git+https://github.com/pgarrett-scripps/ranged_kdtree.git
+
+      - name: Run benchmarks
+        run: |
+          python benchmarks/run_benchmarks.py \
+            --num-psms 5000 \
+            --num-points 5 \
+            --num-iterations 2 \
+            --ops 500 \
+            --output-dir benchmarks/results
+
+      - name: Generate plots
+        run: python benchmarks/plot_results.py benchmarks/results
+
+      - name: Generate site
+        run: python benchmarks/generate_site.py benchmarks/results docs
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/
+
+  deploy:
+    needs: benchmark
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

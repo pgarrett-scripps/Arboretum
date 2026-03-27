@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arboretum - PSM Data Structure Benchmarks</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --border: #30363d;
+      --text: #c9d1d9;
+      --text-muted: #8b949e;
+      --accent: #58a6ff;
+      --green: #3fb950;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: #f0f6fc;
+    }
+    h1 span { color: var(--green); }
+    .subtitle {
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+    }
+    .meta {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    .meta-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.75rem 1.25rem;
+      font-size: 0.9rem;
+    }
+    .meta-item strong { color: var(--accent); }
+    .chart-container {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 2rem;
+    }
+    .chart-container img {
+      width: 100%;
+      height: auto;
+      border-radius: 4px;
+    }
+    .chart-container h2 {
+      font-size: 1.2rem;
+      margin-bottom: 0.75rem;
+      color: #f0f6fc;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 2rem;
+      font-size: 0.9rem;
+    }
+    th, td {
+      padding: 0.6rem 0.8rem;
+      text-align: right;
+      border-bottom: 1px solid var(--border);
+    }
+    th {
+      background: var(--surface);
+      color: var(--accent);
+      font-weight: 600;
+      position: sticky;
+      top: 0;
+    }
+    td.tree-name {
+      text-align: left;
+      font-weight: 600;
+      color: var(--green);
+    }
+    th:first-child { text-align: left; }
+    tr:hover td { background: rgba(88, 166, 255, 0.05); }
+    .std { color: var(--text-muted); font-size: 0.8rem; }
+    footer {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-top: 3rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <h1><span>Arboretum</span> PSM Data Structure Benchmarks</h1>
+  <p class="subtitle">
+    Comparing data structure implementations for storing and searching
+    Peptide Sequence Matches (PSMs) from mass spectrometry experiments.
+  </p>
+
+  <div class="meta">
+    <div class="meta-item">Last updated: <strong>2026-03-27 21:07 UTC</strong></div>
+    <div class="meta-item">PSMs per point: <strong>1,000</strong></div>
+    <div class="meta-item">Size points: <strong>3</strong></div>
+    <div class="meta-item">Iterations: <strong>2</strong></div>
+    <div class="meta-item">Search tolerances: <strong>50 ppm, 100 rt, 0.05 ook0</strong></div>
+  </div>
+
+  <div class="chart-container">
+    <h2>Scaling Performance</h2>
+    <img src="benchmark_scaling.png" alt="Benchmark scaling plot showing time per operation vs tree size">
+  </div>
+
+  <div class="chart-container">
+    <h2>Average Performance Comparison</h2>
+    <img src="benchmark_summary.png" alt="Bar chart comparing average operation times across tree types">
+  </div>
+
+  <div class="chart-container">
+    <h2>Summary Table</h2>
+    <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 0.9rem;">
+      Average across all size points. Times in microseconds. &plusmn; shows standard deviation.
+    </p>
+    <table>
+  <thead><tr><th>Tree Type</th><th>Add (us)</th><th>Search (us)</th><th>Remove (us)</th><th>Save (us)</th><th>Load (us)</th><th>Memory (MB)</th></tr></thead>
+  <tbody>
+    <tr><td class="tree-name">AVL</td><td>5.53 <span class="std">&plusmn; 0.10</span></td><td>3.67 <span class="std">&plusmn; 0.12</span></td><td>4.08 <span class="std">&plusmn; 0.23</span></td><td>2.59 <span class="std">&plusmn; 0.12</span></td><td>17.22 <span class="std">&plusmn; 0.62</span></td><td>0.00 <span class="std">&plusmn; 0.00</span></td></tr>
+    <tr><td class="tree-name">BINARY</td><td>2.58 <span class="std">&plusmn; 0.17</span></td><td>3.97 <span class="std">&plusmn; 0.38</span></td><td>1.58 <span class="std">&plusmn; 0.12</span></td><td>2.72 <span class="std">&plusmn; 0.13</span></td><td>15.01 <span class="std">&plusmn; 1.04</span></td><td>0.00 <span class="std">&plusmn; 0.00</span></td></tr>
+    <tr><td class="tree-name">FAST_AVL</td><td>5.45 <span class="std">&plusmn; 0.13</span></td><td>3.84 <span class="std">&plusmn; 0.34</span></td><td>4.10 <span class="std">&plusmn; 0.07</span></td><td>2.61 <span class="std">&plusmn; 0.08</span></td><td>17.37 <span class="std">&plusmn; 0.87</span></td><td>0.00 <span class="std">&plusmn; 0.00</span></td></tr>
+    <tr><td class="tree-name">FAST_BINARY</td><td>2.39 <span class="std">&plusmn; 0.09</span></td><td>3.82 <span class="std">&plusmn; 0.18</span></td><td>1.67 <span class="std">&plusmn; 0.07</span></td><td>2.68 <span class="std">&plusmn; 0.08</span></td><td>15.10 <span class="std">&plusmn; 0.59</span></td><td>0.00 <span class="std">&plusmn; 0.00</span></td></tr>
+    <tr><td class="tree-name">FAST_RB</td><td>4.08 <span class="std">&plusmn; 0.21</span></td><td>3.83 <span class="std">&plusmn; 0.11</span></td><td>6.78 <span class="std">&plusmn; 0.30</span></td><td>2.66 <span class="std">&plusmn; 0.02</span></td><td>17.21 <span class="std">&plusmn; 1.26</span></td><td>0.00 <span class="std">&plusmn; 0.00</span></td></tr>
+    <tr><td class="tree-name">HASHTABLE</td><td>1.50 <span class="std">&plusmn; 0.06</span></td><td>4.01 <span class="std">&plusmn; 0.15</span></td><td>0.67 <span class="std">&plusmn; 0.04</span></td><td>2.34 <span class="std">&plusmn; 0.03</span></td><td>11.76 <span class="std">&plusmn; 0.52</span></td><td>0.00 <span class="std">&plusmn; 0.00</span></td></tr>
+    <tr><td class="tree-name">HASHTABLE_LARGE</td><td>1.52 <span class="std">&plusmn; 0.04</span></td><td>54.38 <span class="std">&plusmn; 1.00</span></td><td>0.67 <span class="std">&plusmn; 0.02</span></td><td>2.32 <span class="std">&plusmn; 0.05</span></td><td>10.85 <span class="std">&plusmn; 0.08</span></td><td>0.00 <span class="std">&plusmn; 0.00</span></td></tr>
+    <tr><td class="tree-name">HASHTABLE_MED</td><td>1.55 <span class="std">&plusmn; 0.09</span></td><td>8.90 <span class="std">&plusmn; 0.09</span></td><td>0.69 <span class="std">&plusmn; 0.02</span></td><td>2.48 <span class="std">&plusmn; 0.10</span></td><td>12.06 <span class="std">&plusmn; 1.41</span></td><td>0.00 <span class="std">&plusmn; 0.00</span></td></tr>
+    <tr><td class="tree-name">LIST</td><td>0.07 <span class="std">&plusmn; 0.01</span></td><td>171.18 <span class="std">&plusmn; 0.87</span></td><td>0.18 <span class="std">&plusmn; 0.00</span></td><td>2.25 <span class="std">&plusmn; 0.03</span></td><td>10.60 <span class="std">&plusmn; 0.93</span></td><td>0.00 <span class="std">&plusmn; 0.00</span></td></tr>
+    <tr><td class="tree-name">RB</td><td>3.84 <span class="std">&plusmn; 0.07</span></td><td>3.70 <span class="std">&plusmn; 0.15</span></td><td>6.38 <span class="std">&plusmn; 0.28</span></td><td>2.61 <span class="std">&plusmn; 0.06</span></td><td>16.22 <span class="std">&plusmn; 0.73</span></td><td>0.00 <span class="std">&plusmn; 0.00</span></td></tr>
+    <tr><td class="tree-name">SORTED_LIST</td><td>0.99 <span class="std">&plusmn; 0.03</span></td><td>3.07 <span class="std">&plusmn; 0.14</span></td><td>0.15 <span class="std">&plusmn; 0.01</span></td><td>2.70 <span class="std">&plusmn; 0.18</span></td><td>11.52 <span class="std">&plusmn; 1.12</span></td><td>0.00 <span class="std">&plusmn; 0.00</span></td></tr>
+  </tbody>
+</table>
+  </div>
+
+  <footer>
+    <p>
+      Generated by <a href="https://github.com/pgarrett-scripps/Arboretum">Arboretum</a> benchmark suite.
+      Data structures benchmarked: sorted lists, hash tables, binary trees, AVL trees, red-black trees, and more.
+    </p>
+  </footer>
+</body>
+</html>

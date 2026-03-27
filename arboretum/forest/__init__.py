@@ -6,6 +6,7 @@ from forest.psmbintree import PsmBinaryTree, PsmAvlTree, PsmRBTree, PsmFastBinar
 from forest.psmintervaltree import PsmIntervalTree
 from forest.psmkdtree import PsmKdTree
 from forest.psmsortedlist import PsmSortedList, PsmHashtable
+from forest.psmlist import PsmList, PsmSortedLinkedList
 from forest.treetypes import TreeType
 
 sys.setrecursionlimit(10 ** 6)
@@ -39,5 +40,9 @@ def psm_tree_constructor(tree_type: Union[TreeType, str]):
         return PsmHashtable(precision=3)
     elif tree_type == TreeType.HASHTABLE_LARGE or tree_type == 'hashtable_large':
         return PsmHashtable(precision=4)
+    elif tree_type == TreeType.LIST or tree_type == 'list':
+        return PsmList()
+    elif tree_type == TreeType.LINKED_LIST or tree_type == 'linked_list':
+        return PsmSortedLinkedList()
     else:
         raise Exception("Tree type not supported")
