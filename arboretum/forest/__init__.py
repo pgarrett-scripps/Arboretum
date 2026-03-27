@@ -30,8 +30,7 @@ def psm_tree_constructor(tree_type: Union[TreeType, str]):
     elif tree_type == TreeType.FAST_RB or tree_type == 'fast_rb':
         return PsmFastRBTree()
     elif tree_type == TreeType.INTERVAL or tree_type == 'interval':
-        # return PsmIntervalTree()
-        return NotImplementedError
+        return PsmIntervalTree()
     elif tree_type == TreeType.SORTED_LIST or tree_type == 'sorted_list':
         return PsmSortedList()
     elif tree_type == TreeType.HASHTABLE or tree_type == 'hashtable':

@@ -2,7 +2,7 @@
 """
 Arboretum Benchmark Runner
 
-Benchmarks all working PSM tree implementations with multiple iterations,
+Benchmarks all working data structure implementations with multiple iterations,
 memory profiling, and structured output (JSON + CSV).
 """
 
@@ -36,6 +36,7 @@ BENCHMARKABLE_TREES = [
     TreeType.FAST_AVL,
     TreeType.FAST_RB,
     TreeType.LIST,
+    TreeType.INTERVAL,
 ]
 
 # Search tolerance parameters
@@ -44,7 +45,7 @@ RT_OFFSET = 100
 OOK0_TOL = 0.05
 
 
-def benchmark_tree(tree_type, num_psms, num_points, num_iterations, ops, seed):
+def benchmark_tree(tree_type, num_records, num_points, num_iterations, ops, seed):
     """Run all benchmarks for a single tree type."""
     print(f"\n{'='*60}")
     print(f"  Benchmarking: {tree_type.name}")
@@ -53,8 +54,8 @@ def benchmark_tree(tree_type, num_psms, num_points, num_iterations, ops, seed):
     results = []
 
     for point_idx in range(num_points):
-        target_size = (point_idx + 1) * num_psms
-        print(f"  Size point {point_idx + 1}/{num_points}: {target_size:,} PSMs")
+        target_size = (point_idx + 1) * num_records
+        print(f"  Size point {point_idx + 1}/{num_points}: {target_size:,} records")
 
         for iteration in range(num_iterations):
             tree = psm_tree_constructor(tree_type)
@@ -186,8 +187,8 @@ def compute_summary(all_results):
 
 def main():
     parser = argparse.ArgumentParser(description='Arboretum Benchmark Runner')
-    parser.add_argument('--num-psms', type=int, default=10000,
-                        help='PSMs per size point (default: 10000)')
+    parser.add_argument('--num-records', type=int, default=10000,
+                        help='Records per size point (default: 10000)')
     parser.add_argument('--num-points', type=int, default=10,
                         help='Number of size points (default: 10)')
     parser.add_argument('--num-iterations', type=int, default=3,
@@ -203,7 +204,7 @@ def main():
     os.makedirs(args.output_dir, exist_ok=True)
 
     print("Arboretum Benchmark Runner")
-    print(f"  PSMs per point: {args.num_psms:,}")
+    print(f"  Records per point: {args.num_records:,}")
     print(f"  Size points: {args.num_points}")
     print(f"  Iterations: {args.num_iterations}")
     print(f"  Ops per measurement: {args.ops:,}")
@@ -214,7 +215,7 @@ def main():
     for tree_type in BENCHMARKABLE_TREES:
         try:
             results = benchmark_tree(
-                tree_type, args.num_psms, args.num_points,
+                tree_type, args.num_records, args.num_points,
                 args.num_iterations, args.ops, args.seed
             )
             all_results.extend(results)
@@ -232,7 +233,7 @@ def main():
     # --- Write JSON ---
     output = {
         'config': {
-            'num_psms': args.num_psms,
+            'num_records': args.num_records,
             'num_points': args.num_points,
             'num_iterations': args.num_iterations,
             'ops': args.ops,

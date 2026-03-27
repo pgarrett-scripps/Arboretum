@@ -25,8 +25,12 @@ class PsmIntervalTree(PsmTree):
         self.tree[psm.mz - ppm_offset:psm.mz + ppm_offset] = psm
 
     def remove(self, psm: PSM):
-        psms = [psm.data for psm in self.tree[psm.mz]]
-        psms.remove(psm)
+        intervals = self.tree[psm.mz]
+        for interval in intervals:
+            if interval.data == psm:
+                self.tree.remove(interval)
+                return
+        raise ValueError(f"PSM not found in interval tree")
 
     def _search(self, mz_bounds: Boundary, rt_bounds: Boundary, ook0_bounds: Boundary):
         psms = [interval.data for interval in self.tree[mz_bounds.lower:mz_bounds.upper+0.0001]]  # make inclusive

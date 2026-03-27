@@ -68,7 +68,7 @@ def generate_html(summary, config, docs_dir):
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Arboretum - PSM Data Structure Benchmarks</title>
+  <title>Arboretum - Data Structure Benchmarks</title>
   <style>
     :root {{
       --bg: #0d1117;
@@ -169,18 +169,18 @@ def generate_html(summary, config, docs_dir):
   </style>
 </head>
 <body>
-  <h1><span>Arboretum</span> PSM Data Structure Benchmarks</h1>
+  <h1><span>Arboretum</span> Data Structure Benchmarks</h1>
   <p class="subtitle">
-    Comparing data structure implementations for storing and searching
-    Peptide Sequence Matches (PSMs) from mass spectrometry experiments.
+    Comparing data structure implementations for storing and querying
+    records with range-based and multi-dimensional filtering.
   </p>
 
   <div class="meta">
     <div class="meta-item">Last updated: <strong>{now}</strong></div>
-    <div class="meta-item">PSMs per point: <strong>{config.get('num_psms', 'N/A'):,}</strong></div>
+    <div class="meta-item">Records per point: <strong>{config.get('num_records', config.get('num_psms', 'N/A')):,}</strong></div>
     <div class="meta-item">Size points: <strong>{config.get('num_points', 'N/A')}</strong></div>
     <div class="meta-item">Iterations: <strong>{config.get('num_iterations', 'N/A')}</strong></div>
-    <div class="meta-item">Search tolerances: <strong>{config.get('ppm', 50)} ppm, {config.get('rt_offset', 100)} rt, {config.get('ook0_tol', 0.05)} ook0</strong></div>
+    <div class="meta-item">Query tolerances: <strong>ppm={config.get('ppm', 50)}, rt_offset={config.get('rt_offset', 100)}, ook0_tol={config.get('ook0_tol', 0.05)}</strong></div>
   </div>
 
   <div class="chart-container">
