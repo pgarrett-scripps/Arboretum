@@ -35,7 +35,6 @@ BENCHMARKABLE_TREES = [
     TreeType.FAST_BINARY,
     TreeType.FAST_AVL,
     TreeType.FAST_RB,
-    TreeType.LIST,
     TreeType.INTERVAL,
 ]
 
