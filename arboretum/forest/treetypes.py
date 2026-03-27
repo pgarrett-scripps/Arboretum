@@ -15,3 +15,5 @@ class TreeType(Enum):
     BINARY = auto()
     AVL = auto()
     RB = auto()
+    LIST = auto()
+    LINKED_LIST = auto()

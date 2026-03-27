@@ -56,9 +56,13 @@ class PsmSortedList(PsmTree):
     def get(self, mz: float, rt: float, ook0: float) -> List[PSM]:
         pass
 
+    def clear(self):
+        self.tree.clear()
+        self.mz_list.clear()
+
     @property
     def psms(self) -> List[PSM]:
-        return self.tree
+        return list(self.tree)
 
 
 @dataclass
@@ -103,6 +107,9 @@ class PsmList(PsmTree):
 
     def get(self, mz: float, rt: float, ook0: float) -> List[PSM]:
         return [psm for psm in self.tree if psm.mz == mz and psm.rt == rt and psm.ook0 == ook0]
+
+    def clear(self):
+        self.tree.clear()
 
     @property
     def psms(self) -> List[PSM]:
